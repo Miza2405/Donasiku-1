@@ -50,6 +50,65 @@
         
         .filter-bar { background: #ffffff; border: 1px solid #eef2f5; border-radius: 12px; padding: 15px 20px; box-shadow: 0 2px 10px rgba(0,0,0,0.02); margin-bottom: 24px; }
         .chart-box { background: #ffffff; border: 1px solid #eef2f5; border-radius: 12px; padding: 20px; box-shadow: 0 2px 10px rgba(0,0,0,0.02); height: 100%; }
+        /* ========================================================
+   CSS UNTUK SLIDER REKENING & E-WALLET (AKTIF / NONAKTIF)
+   ======================================================== */
+
+/* 1. Jika Slider menggunakan bawaan Bootstrap (.form-switch) */
+.form-switch .form-check-input {
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+/* Warna saat OFF (Nonaktif) -> Abu-abu */
+.form-switch .form-check-input:not(:checked) {
+    background-color: #cbd5e1 !important; 
+    border-color: #94a3b8 !important;
+}
+/* Warna saat ON (Aktif) -> Hijau Emerald */
+.form-switch .form-check-input:checked {
+    background-color: #059669 !important; 
+    border-color: #059669 !important;
+}
+
+/* 2. Jika Slider menggunakan CSS Kustom (.switch / .slider) */
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 46px;
+    height: 24px;
+}
+.switch input { 
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+/* Warna saat OFF (Nonaktif) -> Abu-abu */
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background-color: #cbd5e1; /* <-- Ini yang membuatnya abu-abu */
+    transition: .4s;
+    border-radius: 34px;
+}
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 18px;
+    width: 18px;
+    left: 3px;
+    bottom: 3px;
+    background-color: white;
+    transition: .4s;
+    border-radius: 50%;
+}
+/* Warna saat ON (Aktif) -> Hijau Emerald */
+input:checked + .slider {
+    background-color: #059669;
+}
+input:checked + .slider:before {
+    transform: translateX(22px);
+}
     </style>
 </head>
 <body>

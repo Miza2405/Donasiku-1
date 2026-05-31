@@ -108,9 +108,6 @@ $halaman_aktif = basename($_SERVER['PHP_SELF']);
                         <a class="nav-link <?php echo ($halaman_aktif == 'about.php') ? 'active-page' : ''; ?>" href="about.php">Tentang Kami</a>
                     </li>
                     
-                    <li class="nav-item">
-                        <a class="nav-link" href="about.php#kontak">Hubungi Kami</a>
-                    </li>
                 </ul>
                 <div class="ms-lg-3">
                     <a href="login.php" class="btn btn-emerald px-4 rounded-pill">Login / Daftar</a>

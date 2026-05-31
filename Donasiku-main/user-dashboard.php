@@ -238,7 +238,6 @@
 
 <body>
     <div class="wrapper">
-        <!-- Sidebar Navigasi -->
         <nav id="sidebar" class="d-none d-md-block">
             <div class="sidebar-header">
                 <h3 class="fw-bold mb-0">DonasiKu</h3>
@@ -280,9 +279,7 @@
             </div>
         </nav>
 
-        <!-- Konten Utama -->
         <div id="content">
-            <!-- Navbar Atas -->
             <div class="top-navbar d-flex justify-content-between align-items-center">
                 <div>
                     <h5 class="fw-bold mb-0 text-emerald" id="top-title">Dashboard Saya</h5>
@@ -301,7 +298,6 @@
                 </div>
             </div>
 
-            <!-- 1. Halaman Dashboard -->
             <div id="sec-dashboard" class="content-section active-section">
                 <div class="row g-4 mb-4">
                     <div class="col-md-6">
@@ -357,15 +353,12 @@
                             </tr>
                         </thead>
                         <tbody id="tabel-dashboard-singkat">
-                            <!-- Data diisi via JS -->
-                        </tbody>
+                            </tbody>
                     </table>
                 </div>
             </div>
 
-            <!-- 2. Halaman Riwayat Transaksi -->
             <div id="sec-riwayat" class="content-section">
-                <!-- Filter Buttons -->
                 <div class="filter-container">
                     <button class="filter-btn-riwayat active" onclick="filterRiwayat('Semua', this)">Semua</button>
                     <button class="filter-btn-riwayat" onclick="filterRiwayat('E-Wallet', this)">E-Wallet</button>
@@ -385,16 +378,13 @@
                             </tr>
                         </thead>
                         <tbody id="tabel-riwayat-full">
-                            <!-- Data diisi via JS -->
-                        </tbody>
+                            </tbody>
                     </table>
                 </div>
             </div>
 
-            <!-- 3. Halaman Profil (Versi Dinamis: Gamifikasi & Privasi) -->
             <div id="sec-profil" class="content-section">
                 <div class="row g-4">
-                    <!-- Kolom Kiri: Lencana & Foto -->
                     <div class="col-lg-4">
                         <div class="card dash-card p-4 text-center">
                             <div class="position-relative d-inline-block mx-auto mb-3">
@@ -409,43 +399,10 @@
                             </div>
 
                             <h5 class="fw-bold mb-1" id="profil-nama-display">Memuat Nama...</h5>
-                            <p class="text-muted small mb-3">Donatur Sejak Mar 2026</p>
-
-                            <hr>
-
-                            <!-- Poin 1: Lencana Kebaikan (Gamifikasi) -->
-                            <div class="p-3 bg-light rounded-4 border border-dashed">
-                                <h6 class="fw-bold mb-2 small text-uppercase text-muted" style="letter-spacing: 1px;">
-                                    Lencana Saya
-                                </h6>
-
-                                <div class="d-flex justify-content-center gap-2 mb-2">
-                                    <span class="badge rounded-pill bg-emerald p-2" title="Donatur Pertama">
-                                        <i class="bi bi-award fs-5"></i>
-                                    </span>
-                                    <span class="badge rounded-pill bg-info p-2" title="Pejuang Masjid">
-                                        <i class="bi bi-building fs-5"></i>
-                                    </span>
-                                    <span
-                                        class="badge rounded-pill bg-secondary p-2 opacity-50"
-                                        title="Pahlawan Pendidikan (Belum Tercapai)"
-                                    >
-                                        <i class="bi bi-mortarboard fs-5"></i>
-                                    </span>
-                                </div>
-
-                                <div class="progress mb-1" style="height: 6px; border-radius: 10px;">
-                                    <div class="progress-bar bg-emerald" style="width: 75%"></div>
-                                </div>
-
-                                <small class="text-muted" style="font-size: 0.7rem;">
-                                    Donasi <b>Rp 150.000</b> lagi untuk naik level!
-                                </small>
-                            </div>
+                            <p class="text-muted small mb-0">Donatur Sejak Mar 2026</p>
                         </div>
                     </div>
 
-                    <!-- Kolom Kanan: Form & Pengaturan Notifikasi -->
                     <div class="col-lg-8">
                         <div class="card dash-card p-4 mb-4">
                             <h6 class="fw-bold mb-4">
@@ -477,66 +434,6 @@
                                     </div>
                                 </div>
                             </form>
-                        </div>
-
-                        <!-- Poin 3: Privasi & Notifikasi -->
-                        <div class="card dash-card p-4">
-                            <h6 class="fw-bold mb-4">
-                                <i class="bi bi-bell-fill me-2"></i>
-                                Privasi & Notifikasi
-                            </h6>
-
-                            <div class="list-group list-group-flush">
-                                <!-- Toggle Mode Anonim -->
-                                <div class="list-group-item px-0 d-flex justify-content-between align-items-center border-0 mb-2">
-                                    <div>
-                                        <h6 class="mb-0 fw-bold">Mode Anonim (Hamba Allah)</h6>
-                                        <small class="text-muted">Sembunyikan nama saya dari daftar donatur publik.</small>
-                                    </div>
-
-                                    <div class="form-check form-switch fs-4">
-                                        <input
-                                            class="form-check-input"
-                                            type="checkbox"
-                                            id="modeAnonim"
-                                            onchange="updatePrivasi('Mode Anonim Berhasil Diubah!')"
-                                        >
-                                    </div>
-                                </div>
-
-                                <!-- Toggle Email Notifikasi -->
-                                <div class="list-group-item px-0 d-flex justify-content-between align-items-center border-0 mb-2">
-                                    <div>
-                                        <h6 class="mb-0 fw-bold">Laporan Penyaluran Dana</h6>
-                                        <small class="text-muted">Kirim laporan penggunaan dana donasi saya via Email.</small>
-                                    </div>
-
-                                    <div class="form-check form-switch fs-4">
-                                        <input
-                                            class="form-check-input"
-                                            type="checkbox"
-                                            checked
-                                            onchange="updatePrivasi('Preferensi Notifikasi Diperbarui!')"
-                                        >
-                                    </div>
-                                </div>
-
-                                <!-- Toggle WA Notifikasi -->
-                                <div class="list-group-item px-0 d-flex justify-content-between align-items-center border-0 mb-0">
-                                    <div>
-                                        <h6 class="mb-0 fw-bold">Update Program via WhatsApp</h6>
-                                        <small class="text-muted">Terima info program mendesak melalui pesan WhatsApp.</small>
-                                    </div>
-
-                                    <div class="form-check form-switch fs-4">
-                                        <input
-                                            class="form-check-input"
-                                            type="checkbox"
-                                            onchange="updatePrivasi('Preferensi WhatsApp Diperbarui!')"
-                                        >
-                                    </div>
-                                </div>
-                            </div>
                         </div>
                     </div>
                 </div>
@@ -750,25 +647,6 @@
                         localStorage.removeItem("userRole");
                         window.location.href = 'index.php';
                     }
-                });
-            };
-
-            window.updatePrivasi = function (pesan) {
-                const Toast = Swal.mixin({
-                    toast: true,
-                    position: 'top-end',
-                    showConfirmButton: false,
-                    timer: 3000,
-                    timerProgressBar: true,
-                    didOpen: function (toast) {
-                        toast.addEventListener('mouseenter', Swal.stopTimer);
-                        toast.addEventListener('mouseleave', Swal.resumeTimer);
-                    }
-                });
-
-                Toast.fire({
-                    icon: 'success',
-                    title: pesan
                 });
             };
 

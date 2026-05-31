@@ -74,40 +74,33 @@
         margin-bottom: 10px;
     }
 
-    .category-jariyah {
-        background: #e0f2fe;
-        color: #0369a1;
+    /* Style untuk Badge Timer Real-time */
+    .timer-badge {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        background-color: #fff3cd;
+        color: #856404;
+        padding: 5px 10px;
+        border-radius: 6px;
+        font-size: 11px;
+        font-weight: 700;
+        border: 1px solid #ffeeba;
+    }
+    .timer-badge.danger {
+        background-color: #f8d7da;
+        color: #842029;
+        border-color: #f5c2c7;
     }
 
-    .category-yatim {
-        background: #fef3c7;
-        color: #b45309;
-    }
-
-    .category-pangan {
-        background: #dcfce7;
-        color: #15803d;
-    }
-
-    .category-darurat {
-        background: #fee2e2;
-        color: #b91c1c;
-    }
-
-    .modal-dialog {
-        max-width: 700px;
-    }
+    .category-jariyah { background: #e0f2fe; color: #0369a1; }
+    .category-yatim { background: #fef3c7; color: #b45309; }
+    .category-pangan { background: #dcfce7; color: #15803d; }
+    .category-darurat { background: #fee2e2; color: #b91c1c; }
 
     @keyframes fadeInScale {
-        0% {
-            opacity: 0;
-            transform: scale(0.95);
-        }
-
-        100% {
-            opacity: 1;
-            transform: scale(1);
-        }
+        0% { opacity: 0; transform: scale(0.95); }
+        100% { opacity: 1; transform: scale(1); }
     }
 
     .program-item {
@@ -120,6 +113,9 @@
     }
 </style>
 
+<!-- Tambahkan CDN Bootstrap Icon jika belum ada di header -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+
 <header class="hero-catalog mb-4">
     <div class="container" data-aos="fade-down">
         <h2 class="fw-bold mb-2">Pilih Program Kebaikan</h2>
@@ -128,6 +124,7 @@
 </header>
 
 <div class="container mb-5">
+    <!-- Filter Navigasi -->
     <div class="d-flex justify-content-center flex-wrap mb-5" data-aos="fade-up" id="filter-container">
         <ul class="nav nav-pills justify-content-center">
             <li class="nav-item">
@@ -148,95 +145,40 @@
         </ul>
     </div>
 
-    <div id="loading" class="loading-spinner">
-        <div class="spinner-border text-success me-2" role="status"></div>
-        <span>Memuat program donasi...</span>
-    </div>
-
-    <div class="row" id="programs-container">
-        <!-- Program cards akan di-load via JavaScript -->
-    </div>
-
-    <div id="empty-state" class="text-center py-5" style="display: none;">
-        <h5>Belum ada program</h5>
-        <p class="text-muted">Program dengan kategori ini sedang tidak tersedia</p>
-    </div>
-</div>
-
-<div class="modal fade" id="donasiModal" tabindex="-1">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header border-0">
-                <h5 class="modal-title fw-bold">Berikan Donasi</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-            </div>
-            <div class="modal-body">
-                <div id="program-detail-modal" class="mb-4"></div>
-
-                <form id="donasiForm">
-                    <div class="mb-3">
-                        <label class="form-label fw-semibold">Jumlah Donasi</label>
-                        <div class="input-group">
-                            <span class="input-group-text">Rp</span>
-                            <input type="text" id="amountInput" class="form-control" placeholder="0" inputmode="numeric" autocomplete="off" required>
-                        </div>
-                        <small class="text-muted">Minimal Rp 10.000</small>
-                    </div>
-
-                    <div class="mb-3">
-                        <label class="form-label fw-semibold">Metode Pembayaran</label>
-                        <select id="paymentMethod" class="form-select" required>
-                            <option value="">Pilih metode pembayaran</option>
-                            <option value="Transfer Bank">Transfer Bank</option>
-                            <option value="QRIS">QRIS</option>
-                            <option value="E-Wallet">E-Wallet</option>
-                        </select>
-                    </div>
-
-                    <div class="mb-3">
-                        <label class="form-label fw-semibold">Pesan (Opsional)</label>
-                        <textarea id="messageInput" class="form-control" rows="3" placeholder="Tulis pesan doa atau harapan..."></textarea>
-                    </div>
-
-                    <div class="alert alert-info" role="alert">
-                        <small>Donasi Anda akan diverifikasi oleh tim kami. Pastikan metode pembayaran sudah selesai sebelum ditutup.</small>
-                    </div>
-
-                    <button type="submit" class="btn btn-success w-100 fw-bold py-2">Lanjutkan Pembayaran</button>
-                </form>
-            </div>
+    <!-- Status Loading -->
+    <div id="loading" class="loading-spinner" style="display: none;">
+        <div class="spinner-border text-success" role="status">
+            <span class="visually-hidden">Loading...</span>
         </div>
+        <p class="mt-2 text-muted">Memuat program donasi...</p>
+    </div>
+
+    <!-- Status Jika Kosong -->
+    <div id="empty-state" class="text-center py-5" style="display: none;">
+        <i class="bi bi-inbox fs-1 text-muted"></i>
+        <h5 class="mt-3 text-muted">Belum ada program donasi.</h5>
+    </div>
+
+    <!-- Container Program -->
+    <div class="row" id="programs-container">
+        <!-- Programs dirender di sini -->
     </div>
 </div>
+
+<?php include 'component/footer.php'; ?>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <script>
-    let allPrograms = [];
-    let selectedProgramId = null;
+    let allPrograms = []; 
+    let timerInterval; // Variabel penampung interval timer
 
     function formatCurrency(value) {
-        return new Intl.NumberFormat('id-ID', {
-            style: 'currency',
-            currency: 'IDR',
-            minimumFractionDigits: 0
-        }).format(value);
-    }
-
-    function formatNumberInput(value) {
-        const digitsOnly = String(value).replace(/[^0-9]/g, '');
-
-        if (!digitsOnly) {
-            return '';
-        }
-
-        return new Intl.NumberFormat('id-ID').format(Number(digitsOnly));
-    }
-
-    function parseRupiahInput(value) {
-        return parseInt(String(value).replace(/[^0-9]/g, ''), 10) || 0;
+        return 'Rp ' + new Intl.NumberFormat('id-ID').format(value);
     }
 
     function getCategoryClass(category) {
-        return 'category-' + category;
+        return 'category-' + (category || 'jariyah');
     }
 
     function getCategoryLabel(category) {
@@ -246,229 +188,169 @@
             pangan: 'Pangan',
             darurat: 'Darurat'
         };
-
-        return labels[category] || category;
+        return labels[category] || category || 'Lainnya';
     }
 
-    function getProgramImage(program) {
-        if (program.image_url) {
-            return program.image_url;
-        }
-
-        const fallbackImages = {
-            jariyah: 'https://images.unsplash.com/photo-1564769662533-4f00a87b4056?auto=format&fit=crop&w=800&q=80',
-            yatim: 'https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?auto=format&fit=crop&w=800&q=80',
-            pangan: 'https://images.unsplash.com/photo-1593113630400-ea4288922497?auto=format&fit=crop&w=800&q=80',
-            darurat: 'https://images.unsplash.com/photo-1584515933487-779824d29309?auto=format&fit=crop&w=800&q=80'
-        };
-
-        return fallbackImages[program.category] || fallbackImages.pangan;
-    }
-
+    // Fungsi Render HTML Kartu Donasi
     function createProgramCard(program) {
-        const description = program.description || 'Program donasi untuk berbagi kebaikan';
+        const progress = program.target_amount > 0 
+            ? Math.min(100, Math.round((program.collected_amount / program.target_amount) * 100))
+            : 0;
+            
+        const imageUrl = program.image_url ? program.image_url : 'https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?auto=format&fit=crop&w=600&q=80';
+        
+        // Ambil end_date dari database. Jika tidak ada, default +30 hari dari sekarang agar fitur timer tetap bisa didemonstrasikan.
+        const fallbackDate = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString();
+        const targetDate = program.end_date ? program.end_date : fallbackDate;
 
         return (
-            '<div class="col-md-6 col-lg-4 mb-4 program-item" data-category="' + program.category + '">' +
+            '<div class="col-lg-4 col-md-6 mb-4 program-item">' +
                 '<div class="card program-card h-100">' +
-                    '<img src="' + getProgramImage(program) + '" class="program-image" alt="' + program.title + '" onerror="this.onerror=null; this.src=\'https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?auto=format&fit=crop&w=800&q=80\';">' +
+                    '<img src="' + imageUrl + '" class="card-img-top program-image" alt="' + program.title + '">' +
                     '<div class="card-body d-flex flex-column">' +
-                        '<span class="category-badge ' + getCategoryClass(program.category) + '">' +
-                            getCategoryLabel(program.category) +
-                        '</span>' +
-                        '<h5 class="card-title fw-bold">' + program.title + '</h5>' +
-                        '<p class="card-text text-muted small">' + description + '</p>' +
-                        '<div class="progress-container mt-auto">' +
-                            '<div class="d-flex justify-content-between mb-2">' +
-                                '<small class="text-muted">Terkumpul</small>' +
-                                '<small class="fw-bold text-success">' + program.percentage + '%</small>' +
-                            '</div>' +
-                            '<div class="progress" style="height: 8px;">' +
-                                '<div class="progress-bar" style="width: ' + program.percentage + '%"></div>' +
-                            '</div>' +
-                            '<div class="d-flex justify-content-between mt-2">' +
-                                '<small>' + formatCurrency(program.collected_amount) + '</small>' +
-                                '<small class="text-muted">dari ' + formatCurrency(program.target_amount) + '</small>' +
+                        
+                        // Bagian Badge Kategori & Timer
+                        '<div class="d-flex justify-content-between align-items-start mb-2">' +
+                            '<span class="category-badge ' + getCategoryClass(program.category) + '">' +
+                                getCategoryLabel(program.category) +
+                            '</span>' +
+                            '<div class="timer-badge" data-enddate="' + targetDate + '">' +
+                                '<i class="bi bi-clock"></i> <span class="time-text">Menghitung...</span>' +
                             '</div>' +
                         '</div>' +
-                        '<button class="btn btn-success w-100 mt-3 fw-bold" onclick="openDonasiModal(' + program.id + ')">' +
-                            'Berikan Donasi' +
-                        '</button>' +
+
+                        '<h5 class="card-title fw-bold mt-1">' + program.title + '</h5>' +
+                        '<p class="card-text text-muted small flex-grow-1">' +
+                            (program.description ? program.description.substring(0, 100) + '...' : 'Program donasi untuk kebaikan bersama.') +
+                        '</p>' +
+                        '<div class="mt-auto">' +
+                            '<div class="d-flex justify-content-between small mb-1">' +
+                                '<span class="text-muted">Terkumpul</span>' +
+                                '<span class="fw-bold text-success">' + progress + '%</span>' +
+                            '</div>' +
+                            '<div class="progress mb-2" style="height: 8px;">' +
+                                '<div class="progress-bar" role="progressbar" style="width: ' + progress + '%"></div>' +
+                            '</div>' +
+                            '<div class="d-flex justify-content-between">' +
+                                '<small class="fw-bold">' + formatCurrency(program.collected_amount || 0) + '</small>' +
+                                '<small class="text-muted">Target: ' + formatCurrency(program.target_amount || 0) + '</small>' +
+                            '</div>' +
+                            
+                            '<a href="detail-donasi.php?id=' + program.id + '" class="btn btn-success w-100 mt-3 fw-bold d-block text-center text-decoration-none">' +
+                                'Berikan Donasi' +
+                            '</a>' +
+
+                        '</div>' +
                     '</div>' +
                 '</div>' +
             '</div>'
         );
     }
 
+    // Fungsi Update Countdown Secara Real-time
+    function startCountdown() {
+        if (timerInterval) clearInterval(timerInterval);
+
+        timerInterval = setInterval(() => {
+            const timerElements = document.querySelectorAll('.timer-badge');
+            
+            timerElements.forEach(badge => {
+                const endDateStr = badge.getAttribute('data-enddate');
+                const timeText = badge.querySelector('.time-text');
+                
+                const countDownDate = new Date(endDateStr).getTime();
+                const now = new Date().getTime();
+                const distance = countDownDate - now;
+
+                // Jika waktu sudah habis
+                if (distance < 0) {
+                    timeText.innerHTML = "Berakhir";
+                    badge.classList.add('danger'); // Mengubah warna jadi merah
+                    return;
+                }
+
+                // Kalkulasi waktu
+                const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+                // Format tampilan teks
+                if (days > 0) {
+                    timeText.innerHTML = days + " Hari " + hours + " Jam";
+                } else if (hours > 0) {
+                    timeText.innerHTML = hours + " Jam " + minutes + " Mnt";
+                } else {
+                    timeText.innerHTML = minutes + " Mnt " + seconds + " Dtk";
+                    badge.classList.add('danger'); // Ubah merah jika sisa waktu < 1 jam
+                }
+            });
+        }, 1000); // Update setiap 1 detik (1000 ms)
+    }
+
+    // Tampilkan Program ke HTML
     function displayPrograms(programs) {
         const container = document.getElementById('programs-container');
         const emptyState = document.getElementById('empty-state');
-
+        
         if (programs.length === 0) {
             container.innerHTML = '';
             emptyState.style.display = 'block';
             return;
         }
-
+        
         emptyState.style.display = 'none';
         container.innerHTML = programs.map(createProgramCard).join('');
+        
+        // Memulai hitung mundur setiap kali kartu selesai dicetak
+        startCountdown();
     }
 
     function showError(message) {
         document.getElementById('loading').style.display = 'none';
-        Swal.fire({ icon: 'error', title: 'Error', text: message });
+        Swal.fire({ icon: 'error', title: 'Gagal Memuat Data', text: message });
     }
 
     async function loadPrograms() {
+        document.getElementById('loading').style.display = 'block';
+        document.getElementById('programs-container').innerHTML = '';
+        
         try {
             const response = await fetch('./api/programs.php?action=list');
             const result = await response.json();
-
-            if (result.success) {
-                allPrograms = result.data;
-                displayPrograms(allPrograms);
-                document.getElementById('loading').style.display = 'none';
+            
+            document.getElementById('loading').style.display = 'none';
+            
+            if (response.ok && result.success) {
+                allPrograms = result.data || [];
+                displayPrograms(allPrograms); 
             } else {
-                showError('Gagal memuat program');
+                showError(result.message || 'Gagal mengambil data program.');
             }
         } catch (error) {
-            console.error('Error:', error);
-            showError('Terjadi kesalahan saat memuat program');
+            console.error('Error fetching programs:', error);
+            showError('Terjadi kesalahan koneksi saat memuat data dari server.');
         }
     }
 
-    async function openDonasiModal(programId) {
-        try {
-            const response = await fetch('./api/check-session.php');
-            const result = await response.json();
-
-            if (!result.logged_in) {
-                Swal.fire({
-                    icon: 'warning',
-                    title: 'Silakan Login',
-                    text: 'Anda harus login untuk melakukan donasi',
-                    confirmButtonText: 'Ke Login'
-                }).then(function () {
-                    window.location.href = 'login.php?redirect=donasi.php';
-                });
-                return;
-            }
-
-            selectedProgramId = programId;
-
-            const programResponse = await fetch('./api/programs.php?action=detail&id=' + programId);
-            const programResult = await programResponse.json();
-
-            if (programResult.success) {
-                const program = programResult.data;
-                const detailHtml =
-                    '<div class="text-center mb-3">' +
-                        '<h6 class="fw-bold">' + program.title + '</h6>' +
-                        '<small class="text-muted d-block">Target: ' + formatCurrency(program.target_amount) + '</small>' +
-                        '<small class="text-success fw-bold d-block">Terkumpul: ' + formatCurrency(program.collected_amount) + ' (' + program.percentage + '%)</small>' +
-                        '<small class="text-muted d-block mt-2">' + program.donor_count + ' pendonasi</small>' +
-                    '</div>';
-
-                document.getElementById('program-detail-modal').innerHTML = detailHtml;
-            }
-
-            const modal = new bootstrap.Modal(document.getElementById('donasiModal'));
-            modal.show();
-        } catch (error) {
-            console.error('Error:', error);
-            showError('Terjadi kesalahan saat membuka form donasi');
-        }
-    }
-
-    document.addEventListener('DOMContentLoaded', function () {
-        document.querySelectorAll('.filter-btn').forEach(function (btn) {
-            btn.addEventListener('click', function () {
-                const currentFilter = this.dataset.filter;
-
-                document.querySelectorAll('.filter-btn').forEach(function (button) {
-                    button.classList.remove('active');
-                });
-
+    document.addEventListener('DOMContentLoaded', () => {
+        loadPrograms(); 
+        
+        const filterBtns = document.querySelectorAll('.filter-btn');
+        filterBtns.forEach(btn => {
+            btn.addEventListener('click', function() {
+                filterBtns.forEach(b => b.classList.remove('active'));
                 this.classList.add('active');
-
-                if (currentFilter === 'all') {
+                
+                const filterValue = this.getAttribute('data-filter');
+                
+                if (filterValue === 'all') {
                     displayPrograms(allPrograms);
-                    return;
-                }
-
-                displayPrograms(allPrograms.filter(function (program) {
-                    return program.category === currentFilter;
-                }));
-            });
-        });
-
-        document.getElementById('amountInput').addEventListener('input', function () {
-            this.value = formatNumberInput(this.value);
-        });
-
-        document.getElementById('donasiForm').addEventListener('submit', async function (event) {
-            event.preventDefault();
-
-            const amount = parseRupiahInput(document.getElementById('amountInput').value);
-            const paymentMethod = document.getElementById('paymentMethod').value;
-            const message = document.getElementById('messageInput').value;
-
-            if (amount < 10000) {
-                Swal.fire({ icon: 'warning', title: 'Jumlah Tidak Valid', text: 'Minimal donasi Rp 10.000' });
-                return;
-            }
-
-            Swal.fire({
-                title: 'Memproses...',
-                icon: 'info',
-                allowOutsideClick: false,
-                didOpen: function () {
-                    Swal.showLoading();
+                } else {
+                    const filteredPrograms = allPrograms.filter(p => p.category === filterValue);
+                    displayPrograms(filteredPrograms);
                 }
             });
-
-            try {
-                const response = await fetch('./api/create-donasi.php', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        program_id: selectedProgramId,
-                        amount: amount,
-                        payment_method: paymentMethod,
-                        message: message
-                    })
-                });
-
-                const responseText = await response.text();
-                let result;
-
-                try {
-                    result = JSON.parse(responseText);
-                } catch (parseError) {
-                    throw new Error(responseText || 'Response server tidak valid');
-                }
-
-                if (result.success) {
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'Donasi Berhasil Dibuat!',
-                        text: 'Kode Transaksi: ' + result.data.trx_code + '\nSilakan lakukan pembayaran',
-                        confirmButtonText: 'Ke Dashboard'
-                    }).then(function () {
-                        window.location.href = 'user-dashboard.php';
-                    });
-                    return;
-                }
-
-                Swal.fire({ icon: 'error', title: 'Gagal', text: result.message });
-            } catch (error) {
-                console.error('Error:', error);
-                Swal.fire({ icon: 'error', title: 'Kesalahan', text: 'Terjadi kesalahan jaringan' });
-            }
         });
-
-        loadPrograms();
     });
 </script>
-
-<?php include 'component/footer.php'; ?>
